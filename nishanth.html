@@ -1,0 +1,3299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartFlow AI</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--bg:#06111d;
+--panel:#0a1b2a;
+--panel2:#0d2233;
+--border:#193c52;
+--text:#edf9ff;
+--muted:#7893a6;
+--cyan:#20c9d0;
+--blue:#168dcc;
+--green:#25d39a;
+--yellow:#f0c34e;
+--red:#ef5c68;
+}
+
+body{
+font-family:Inter,Arial,sans-serif;
+background:
+radial-gradient(circle at 20% 10%,#0b2a3d 0,transparent 35%),
+radial-gradient(circle at 90% 80%,#082536 0,transparent 30%),
+var(--bg);
+color:var(--text);
+min-height:100vh;
+}
+
+button,input,select{font:inherit}
+
+button{
+cursor:pointer;
+border:0;
+}
+
+.app{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:250px;
+position:fixed;
+height:100vh;
+background:rgba(6,18,29,.94);
+border-right:1px solid var(--border);
+padding:20px 14px;
+z-index:20;
+backdrop-filter:blur(15px);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:30px;
+}
+
+.logoIcon{
+width:42px;
+height:42px;
+border-radius:12px;
+display:grid;
+place-items:center;
+font-size:22px;
+background:linear-gradient(135deg,var(--blue),var(--cyan));
+}
+
+.logo b{
+display:block;
+font-size:14px;
+letter-spacing:1px;
+}
+
+.logo small{
+font-size:8px;
+color:var(--muted);
+}
+
+.nav{
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px;
+margin:5px 0;
+width:100%;
+border-radius:9px;
+background:transparent;
+color:var(--muted);
+text-align:left;
+}
+
+.nav:hover,
+.nav.active{
+background:#102c40;
+color:white;
+}
+
+.nav.active{
+border-left:3px solid var(--cyan);
+}
+
+.demo{
+position:absolute;
+bottom:25px;
+left:14px;
+right:14px;
+}
+
+.demo button{
+width:100%;
+padding:11px;
+border-radius:9px;
+background:#0c7186;
+color:white;
+font-weight:bold;
+}
+
+.demo small{
+display:block;
+text-align:center;
+margin-top:8px;
+font-size:9px;
+color:#60798b;
+}
+
+/* MAIN */
+
+.main{
+margin-left:250px;
+width:calc(100% - 250px);
+}
+
+.topbar{
+height:75px;
+padding:0 28px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:1px solid var(--border);
+}
+
+.topbar small{
+font-size:9px;
+letter-spacing:2px;
+color:var(--muted);
+}
+
+.topbar h1{
+font-size:21px;
+margin-top:4px;
+}
+
+.status{
+display:flex;
+gap:7px;
+}
+
+.status span{
+padding:7px 10px;
+border:1px solid var(--border);
+border-radius:20px;
+font-size:9px;
+color:#8ca6b7;
+}
+
+.content{
+padding:28px;
+}
+
+/* GENERAL */
+
+.hero{
+padding:30px;
+border-radius:18px;
+border:1px solid #1d4b64;
+background:linear-gradient(135deg,#0b293d,#081725);
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+}
+
+.tag{
+font-size:10px;
+color:var(--cyan);
+}
+
+.hero h2{
+font-size:34px;
+max-width:750px;
+margin:10px 0;
+}
+
+.hero p{
+color:var(--muted);
+max-width:700px;
+line-height:1.6;
+}
+
+.primary{
+background:linear-gradient(135deg,var(--blue),var(--cyan));
+color:white;
+padding:11px 16px;
+border-radius:8px;
+font-weight:bold;
+}
+
+.secondary{
+background:#0b1d2b;
+border:1px solid #284a5e;
+color:#aac1d0;
+padding:10px 15px;
+border-radius:8px;
+}
+
+.primary:hover,
+.secondary:hover{
+transform:translateY(-1px);
+}
+
+/* METRICS */
+
+.metrics{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:12px;
+margin-top:18px;
+}
+
+.metric{
+background:rgba(9,27,42,.9);
+border:1px solid var(--border);
+border-radius:14px;
+padding:16px;
+}
+
+.metricIcon{
+font-size:22px;
+margin-bottom:12px;
+}
+
+.metric small{
+display:block;
+font-size:10px;
+color:var(--muted);
+}
+
+.metric strong{
+display:block;
+font-size:24px;
+margin-top:5px;
+}
+
+/* CARDS */
+
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+margin-top:18px;
+}
+
+.card{
+background:rgba(9,27,42,.92);
+border:1px solid var(--border);
+border-radius:14px;
+padding:20px;
+}
+
+.card h3{
+margin-bottom:15px;
+}
+
+.label{
+font-size:9px;
+letter-spacing:1.5px;
+color:var(--muted);
+}
+
+/* SIGNAL */
+
+.signal{
+width:55px;
+padding:8px;
+background:#02080d;
+border-radius:12px;
+margin:15px 0;
+}
+
+.light{
+width:15px;
+height:15px;
+border-radius:50%;
+background:#27333a;
+margin:6px auto;
+}
+
+.red{background:#ef5c68;box-shadow:0 0 12px #ef5c68}
+.yellow{background:#f0c34e;box-shadow:0 0 12px #f0c34e}
+.green{background:#25d39a;box-shadow:0 0 12px #25d39a}
+
+/* PAGE */
+
+.pageTitle{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.pageTitle h2{
+margin-top:5px;
+}
+
+.actions{
+display:flex;
+gap:8px;
+}
+
+/* SIMULATION */
+
+.simulation{
+height:560px;
+position:relative;
+overflow:hidden;
+border-radius:17px;
+border:1px solid #1b455c;
+background:#07141f;
+}
+
+.roadV{
+position:absolute;
+width:180px;
+height:100%;
+left:50%;
+transform:translateX(-50%);
+background:#182e3b;
+}
+
+.roadH{
+position:absolute;
+width:100%;
+height:180px;
+top:50%;
+transform:translateY(-50%);
+background:#182e3b;
+}
+
+.center{
+position:absolute;
+width:180px;
+height:180px;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+background:#1c3744;
+}
+
+.lane{
+position:absolute;
+background:#c1d0d5;
+opacity:.25;
+}
+
+.lane.v{
+width:2px;
+height:100%;
+left:50%;
+}
+
+.lane.h{
+height:2px;
+width:100%;
+top:50%;
+}
+
+.direction{
+position:absolute;
+color:#718a9c;
+font-weight:bold;
+font-size:14px;
+}
+
+.n{top:15px;left:50%}
+.s{bottom:15px;left:50%}
+.e{right:20px;top:50%}
+.w{left:20px;top:50%}
+
+.simSignal{
+position:absolute;
+left:calc(50% + 100px);
+top:calc(50% - 130px);
+z-index:8;
+}
+
+.vehicle{
+position:absolute;
+z-index:10;
+font-size:19px;
+transition:all .9s linear;
+}
+
+.phase{
+position:absolute;
+z-index:15;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+background:rgba(2,12,20,.94);
+border:1px solid #31566b;
+border-radius:12px;
+padding:15px 25px;
+text-align:center;
+}
+
+.phase small{
+display:block;
+color:var(--muted);
+font-size:8px;
+}
+
+.phase b{
+display:block;
+font-size:12px;
+margin:5px 0;
+}
+
+.phase strong{
+font-size:22px;
+color:var(--cyan);
+}
+
+/* CONFIG */
+
+.config{
+margin-top:18px;
+display:grid;
+gap:17px;
+}
+
+.scenarios{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+}
+
+.scenarios button{
+padding:8px 11px;
+border-radius:7px;
+border:1px solid #284a5d;
+background:#0a1d2b;
+color:#8aa2b3;
+font-size:10px;
+}
+
+.scenarios button.active{
+background:#0b7186;
+color:white;
+}
+
+.slider div{
+display:flex;
+justify-content:space-between;
+color:#8aa2b3;
+font-size:11px;
+margin-bottom:6px;
+}
+
+.slider input{
+width:100%;
+}
+
+.metricRow{
+display:flex;
+justify-content:space-between;
+padding:9px 0;
+border-bottom:1px solid #173244;
+color:#829aaa;
+font-size:12px;
+}
+
+/* OPTIMIZATION */
+
+.optimization{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.big{
+font-size:38px;
+color:var(--cyan);
+margin:10px 0;
+}
+
+.candidate{
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+background:#0c2130;
+border:1px solid #1d4155;
+display:flex;
+justify-content:space-between;
+}
+
+.candidate.best{
+border-color:var(--green);
+}
+
+/* CHART */
+
+.chart{
+height:280px;
+display:flex;
+align-items:flex-end;
+gap:4px;
+padding-top:30px;
+border-bottom:1px solid #244558;
+}
+
+.bar{
+flex:1;
+min-height:3px;
+background:linear-gradient(to top,#117fb5,#2bd0ca);
+border-radius:3px 3px 0 0;
+}
+
+/* INTERSECTIONS */
+
+.network{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.junction{
+padding:25px;
+border:1px solid var(--border);
+background:#091b29;
+border-radius:14px;
+}
+
+.dot{
+width:13px;
+height:13px;
+border-radius:50%;
+margin-bottom:14px;
+}
+
+.low{background:var(--green)}
+.medium{background:var(--yellow)}
+.high{background:var(--red)}
+
+.junction strong{
+display:block;
+font-size:30px;
+margin:10px 0;
+}
+
+/* ASSISTANT */
+
+.chat{
+max-width:900px;
+margin:auto;
+}
+
+.chatHeader{
+display:flex;
+gap:12px;
+align-items:center;
+color:var(--cyan);
+}
+
+.message{
+margin:25px 0;
+padding:18px;
+background:#0d2333;
+border-radius:10px;
+color:#a8c0cf;
+line-height:1.7;
+}
+
+.questions{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+margin-bottom:15px;
+}
+
+.questions button{
+padding:8px 10px;
+border-radius:7px;
+background:#0b1e2d;
+border:1px solid #28495d;
+color:#91a9b8;
+font-size:10px;
+}
+
+.chatInput{
+display:flex;
+gap:8px;
+}
+
+.chatInput input{
+flex:1;
+padding:12px;
+background:#06131e;
+border:1px solid #29495c;
+border-radius:8px;
+color:white;
+outline:none;
+}
+
+/* PREDICTION */
+
+.prediction{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+}
+
+.predCard{
+padding:20px;
+background:#091b29;
+border:1px solid var(--border);
+border-radius:14px;
+}
+
+.predCard strong{
+display:block;
+font-size:30px;
+color:var(--cyan);
+margin-top:8px;
+}
+
+/* REPORT */
+
+.report{
+max-width:850px;
+margin:auto;
+line-height:1.8;
+}
+
+.report h1{
+color:var(--cyan);
+}
+
+.report p{
+color:#91a8b7;
+}
+
+/* PRESENTATION */
+
+.presentation{
+text-align:center;
+padding:60px 20px;
+}
+
+.presentation h1{
+font-size:52px;
+color:var(--cyan);
+margin-bottom:15px;
+}
+
+.presentation .step{
+font-size:25px;
+margin:25px;
+}
+
+.progress{
+height:8px;
+background:#152c3b;
+border-radius:10px;
+overflow:hidden;
+margin:25px auto;
+max-width:700px;
+}
+
+.progress div{
+height:100%;
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+}
+
+/* TOAST */
+
+.toast{
+position:fixed;
+right:25px;
+bottom:25px;
+padding:14px 18px;
+border-radius:10px;
+background:#102b3c;
+border:1px solid #2b586d;
+z-index:100;
+display:none;
+}
+
+.toast.show{
+display:block;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+.metrics{
+grid-template-columns:repeat(3,1fr);
+}
+.network{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:750px){
+
+.sidebar{
+position:relative;
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.content{
+padding:15px;
+}
+
+.hero{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.topbar{
+padding:0 15px;
+}
+
+.status{
+display:none;
+}
+
+.metrics{
+grid-template-columns:repeat(2,1fr);
+}
+
+.grid2,
+.optimization{
+grid-template-columns:1fr;
+}
+
+.network{
+grid-template-columns:1fr;
+}
+
+.prediction{
+grid-template-columns:1fr;
+}
+
+.pageTitle{
+flex-direction:column;
+align-items:flex-start;
+gap:12px;
+}
+
+.simulation{
+height:450px;
+}
+
+.hero h2{
+font-size:25px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo">
+<div class="logoIcon">⚡</div>
+<div>
+<b>SMARTFLOW AI</b>
+<small>Observe • Predict • Optimize • Explain</small>
+</div>
+</div>
+
+<button class="nav active" onclick="navigate('dashboard')">▣ Dashboard</button>
+<button class="nav" onclick="navigate('simulation')">🚦 Live Simulation</button>
+<button class="nav" onclick="navigate('optimization')">✨ AI Optimization</button>
+<button class="nav" onclick="navigate('analytics')">📊 Analytics</button>
+<button class="nav" onclick="navigate('intersections')">🗺 Intersections</button>
+<button class="nav" onclick="navigate('assistant')">🤖 AI Assistant</button>
+<button class="nav" onclick="navigate('prediction')">🔮 Prediction</button>
+<button class="nav" onclick="navigate('emergency')">🚑 Emergency</button>
+<button class="nav" onclick="navigate('reports')">📄 Reports</button>
+
+<div class="demo">
+<button onclick="demoMode()">⚡ DEMO MODE</button>
+<small>Simulation only. Does not control real-world signals.</small>
+</div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+<div>
+<small>SMART CITY OPERATIONS</small>
+<h1 id="pageTitle">Dashboard</h1>
+</div>
+
+<div class="status">
+<span>🟢 SYSTEM ONLINE</span>
+<span id="runStatus">⚪ SIMULATION PAUSED</span>
+<span>🤖 AI ENGINE READY</span>
+</div>
+
+</header>
+
+<section class="content" id="content"></section>
+
+</main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+SMARTFLOW AI
+SINGLE FILE APPLICATION
+========================================================= */
+
+
+/* ==============================
+CONFIGURATION
+============================== */
+
+const scenarios={
+
+normal:{
+name:"NORMAL TRAFFIC",
+north:35,
+south:30,
+east:35,
+west:30,
+ns:30,
+ew:30
+},
+
+morning:{
+name:"MORNING PEAK",
+north:70,
+south:65,
+east:40,
+west:35,
+ns:40,
+ew:25
+},
+
+evening:{
+name:"EVENING PEAK",
+north:40,
+south:35,
+east:75,
+west:70,
+ns:25,
+ew:40
+},
+
+heavy:{
+name:"HEAVY TRAFFIC",
+north:85,
+south:80,
+east:85,
+west:80,
+ns:35,
+ew:35
+},
+
+rain:{
+name:"RAIN SCENARIO",
+north:60,
+south:55,
+east:60,
+west:55,
+ns:35,
+ew:35
+}
+
+};
+
+
+/* ==============================
+STATE
+============================== */
+
+let currentPage="dashboard";
+
+let scenario="normal";
+
+let config={...scenarios.normal};
+
+let running=false;
+
+let elapsed=0;
+
+let phaseIndex=0;
+
+let phaseTime=0;
+
+let vehicles=[];
+
+let totalVehicles=0;
+
+let servedVehicles=0;
+
+let totalWaiting=0;
+
+let maxWaiting=0;
+
+let queue=0;
+
+let avgQueue=0;
+
+let history=[];
+
+let optimized=null;
+
+let emergency=false;
+
+let presentation=false;
+
+let presentationStep=0;
+
+
+/* ==============================
+PHASES
+============================== */
+
+function phases(){
+
+return [
+
+{
+name:"NORTH / SOUTH GREEN",
+dir:"NS",
+duration:config.ns
+},
+
+{
+name:"NORTH / SOUTH YELLOW",
+dir:"NSY",
+duration:4
+},
+
+{
+name:"ALL RED",
+dir:"RED",
+duration:2
+},
+
+{
+name:"EAST / WEST GREEN",
+dir:"EW",
+duration:config.ew
+},
+
+{
+name:"EAST / WEST YELLOW",
+dir:"EWY",
+duration:4
+},
+
+{
+name:"ALL RED",
+dir:"RED",
+duration:2
+}
+
+];
+
+}
+
+
+function currentPhase(){
+
+return phases()[phaseIndex];
+
+}
+
+
+/* ==============================
+VEHICLE
+============================== */
+
+function createVehicle(direction){
+
+return {
+
+id:Date.now()+Math.random(),
+
+direction,
+
+position:0,
+
+waiting:0
+
+};
+
+}
+
+
+/* ==============================
+SIMULATION
+============================== */
+
+function step(){
+
+const phase=currentPhase();
+
+const directions=["north","south","east","west"];
+
+
+/* generate vehicles */
+
+directions.forEach(direction=>{
+
+let volume=config[direction];
+
+if(Math.random()<volume/1000){
+
+vehicles.push(
+createVehicle(direction)
+);
+
+totalVehicles++;
+
+}
+
+});
+
+
+queue=0;
+
+
+/* move vehicles */
+
+vehicles.forEach(v=>{
+
+const ns=
+v.direction==="north" ||
+v.direction==="south";
+
+const green=
+(phase.dir==="NS" && ns) ||
+(phase.dir==="EW" && !ns);
+
+
+if(!green && v.position>=38 && v.position<=48){
+
+v.waiting++;
+
+totalWaiting++;
+
+maxWaiting=Math.max(
+maxWaiting,
+v.waiting
+);
+
+queue++;
+
+}else{
+
+v.position+=2.2;
+
+}
+
+});
+
+
+/* remove served */
+
+vehicles=vehicles.filter(v=>{
+
+if(v.position>=100){
+
+servedVehicles++;
+
+return false;
+
+}
+
+return true;
+
+});
+
+
+avgQueue=
+history.length===0
+?queue
+:avgQueue*.9+queue*.1;
+
+
+let congestion=
+Math.min(100,queue);
+elapsed++;
+
+phaseTime++;
+
+
+if(phaseTime>=phase.duration){
+
+phaseIndex=
+(phaseIndex+1)%6;
+
+phaseTime=0;
+
+}
+
+
+history.push({
+
+time:elapsed,
+
+queue,
+
+congestion,
+
+served:servedVehicles,
+
+waiting:totalWaiting
+
+});
+
+
+if(history.length>120){
+
+history.shift();
+
+}
+
+render();
+
+}
+
+
+/* ==============================
+METRICS
+============================== */
+
+function metrics(){
+
+const averageWaiting=
+servedVehicles>0
+?totalWaiting/servedVehicles
+:0;
+
+const throughput=
+elapsed>0
+?(servedVehicles/elapsed)*60
+:0;
+
+const idle=
+totalWaiting*.8;
+
+const fuel=
+idle*.01;
+
+const co2=
+idle*.02;
+
+return {
+
+total:totalVehicles,
+
+served:servedVehicles,
+
+waiting:+averageWaiting.toFixed(2),
+
+maxWaiting,
+
+queue:Math.round(queue),
+
+avgQueue:+avgQueue.toFixed(2),
+
+congestion:+Math.min(100,queue).toFixed(2),
+
+throughput:+throughput.toFixed(2),
+
+idle:+idle.toFixed(2),
+
+fuel:+fuel.toFixed(2),
+
+co2:+co2.toFixed(2)
+
+};
+
+}
+
+
+/* ==============================
+SMART CITY SCORE
+============================== */
+
+function score(){
+
+const m=metrics();
+
+let efficiency=
+Math.min(100,m.throughput*2);
+
+let waiting=
+Math.max(0,100-m.waiting);
+
+let q=
+Math.max(0,100-m.queue);
+
+let congestion=
+100-m.congestion;
+
+return Math.max(
+0,
+Math.min(
+100,
+Math.round(
+(efficiency+
+waiting+
+q+
+congestion)/4
+)
+)
+);
+
+}
+
+
+/* ==============================
+RESET
+============================== */
+
+function reset(){
+
+running=false;
+
+elapsed=0;
+
+phaseIndex=0;
+
+phaseTime=0;
+
+vehicles=[];
+
+totalVehicles=0;
+
+servedVehicles=0;
+
+totalWaiting=0;
+
+maxWaiting=0;
+
+queue=0;
+
+avgQueue=0;
+
+history=[];
+
+optimized=null;
+
+showToast("Simulation reset");
+
+render();
+
+}
+
+
+/* ==============================
+START / PAUSE
+============================== */
+
+function start(){
+
+running=true;
+
+showToast("Simulation started");
+
+render();
+
+}
+
+function pause(){
+
+running=false;
+
+showToast("Simulation paused");
+
+render();
+
+}
+
+
+/* ==============================
+ANIMATION LOOP
+============================== */
+
+setInterval(()=>{
+
+if(running){
+
+step();
+
+}
+
+},1000);
+
+
+/* ==============================
+NAVIGATION
+============================== */
+
+function navigate(page){
+
+currentPage=page;
+
+document.querySelectorAll(".nav")
+.forEach(x=>x.classList.remove("active"));
+
+const map={
+dashboard:0,
+simulation:1,
+optimization:2,
+analytics:3,
+intersections:4,
+assistant:5,
+prediction:6,
+emergency:7,
+reports:8
+};
+
+if(document.querySelectorAll(".nav")[map[page]]){
+
+document.querySelectorAll(".nav")[map[page]]
+.classList.add("active");
+
+}
+
+render();
+
+}
+
+
+/* ==============================
+SCENARIO
+============================== */
+
+function loadScenario(name){
+
+scenario=name;
+
+config={
+...scenarios[name]
+};
+
+reset();
+
+showToast(
+scenarios[name].name+" loaded"
+);
+
+}
+
+
+/* ==============================
+DEMO MODE
+============================== */
+
+function demoMode(){
+
+loadScenario("morning");
+
+start();
+
+navigate("simulation");
+
+showToast(
+"DEMO MODE activated"
+);
+
+}
+
+
+/* ==============================
+SIGNAL HTML
+============================== */
+
+function signalHTML(){
+
+const p=currentPhase();
+
+let red=true;
+let yellow=false;
+let green=false;
+
+if(p.dir==="NS")green=true;
+if(p.dir==="EW")green=true;
+if(p.dir==="NSY"||p.dir==="EWY")yellow=true;
+
+return `
+
+<div class="signal">
+
+<div class="light ${red&&!green&&!yellow?"red":p.dir==="EW"?"red":""}"></div>
+
+<div class="light ${yellow?"yellow":""}"></div>
+
+<div class="light ${green?"green":"red"}"></div>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+VEHICLE HTML
+============================== */
+
+function vehicleHTML(v){
+
+let style="";
+
+if(v.direction==="north"){
+
+style=`
+left:calc(50% - 35px);
+top:${v.position}%;
+`;
+
+}
+
+if(v.direction==="south"){
+
+style=`
+left:calc(50% + 20px);
+top:${100-v.position}%;
+`;
+
+}
+
+if(v.direction==="east"){
+
+style=`
+left:${v.position}%;
+top:calc(50% - 35px);
+`;
+
+}
+
+if(v.direction==="west"){
+
+style=`
+left:${100-v.position}%;
+top:calc(50% + 20px);
+`;
+
+}
+
+return `<div class="vehicle" style="${style}">🚗</div>`;
+
+}
+
+
+/* ==============================
+METRIC CARDS
+============================== */
+
+function metricHTML(){
+
+const m=metrics();
+
+return `
+
+<div class="metrics">
+
+<div class="metric">
+<div class="metricIcon">🚗</div>
+<small>Vehicles</small>
+<strong>${m.total}</strong>
+</div>
+
+<div class="metric">
+<div class="metricIcon">⏱</div>
+<small>Average Waiting</small>
+<strong>${m.waiting}s</strong>
+</div>
+
+<div class="metric">
+<div class="metricIcon">🚦</div>
+<small>Queue Length</small>
+<strong>${m.queue}</strong>
+</div>
+
+<div class="metric">
+<div class="metricIcon">📊</div>
+<small>Congestion</small>
+<strong>${m.congestion}%</strong>
+</div>
+
+<div class="metric">
+<div class="metricIcon">✓</div>
+<small>Vehicles Served</small>
+<strong>${m.served}</strong>
+</div>
+
+<div class="metric">
+<div class="metricIcon">✨</div>
+<small>Smart City Score</small>
+<strong>${score()}/100</strong>
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+DASHBOARD
+============================== */
+
+function dashboard(){
+
+const m=metrics();
+const p=currentPhase();
+
+return `
+
+<div class="hero">
+
+<div>
+
+<span class="tag">● LIVE TRAFFIC STATUS</span>
+
+<h2>
+Observe traffic. Predict congestion. Optimize signals.
+</h2>
+
+<p>
+SmartFlow AI is a simulation and decision-support
+platform for intelligent traffic planning.
+</p>
+
+</div>
+
+<button class="primary"
+onclick="start()">
+▶ START SIMULATION
+</button>
+
+</div>
+
+${metricHTML()}
+
+<div class="grid2">
+
+<div class="card">
+
+<span class="label">CURRENT SIGNAL PHASE</span>
+
+<h3 style="margin-top:10px">
+${p.name}
+</h3>
+
+${signalHTML()}
+
+<p style="color:var(--muted)">
+Countdown:
+<strong style="color:var(--cyan)">
+${p.duration-phaseTime}s
+</strong>
+</p>
+
+</div>
+
+<div class="card">
+
+<span class="label">AI RECOMMENDATION</span>
+
+<h3 style="margin-top:10px">
+${recommendation().title}
+</h3>
+
+<p style="color:var(--muted);line-height:1.6">
+${recommendation().text}
+</p>
+
+<button class="secondary"
+onclick="navigate('optimization')">
+✨ OPTIMIZE
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+SIMULATION PAGE
+============================== */
+
+function simulationPage(){
+
+const m=metrics();
+const p=currentPhase();
+
+let cars=vehicles.map(vehicleHTML).join("");
+
+return `
+
+<div class="pageTitle">
+
+<div>
+<span class="label">LIVE SIMULATION</span>
+<h2>Four-Way Intersection</h2>
+</div>
+
+<div class="actions">
+
+<button class="primary"
+onclick="${running?"pause()":"start()"}">
+${running?"⏸ PAUSE":"▶ START"}
+</button>
+
+<button class="secondary"
+onclick="reset()">
+↻ RESET
+</button>
+
+</div>
+
+</div>
+
+
+<div class="simulation">
+
+<div class="roadV"></div>
+<div class="roadH"></div>
+<div class="center"></div>
+
+<div class="lane v"></div>
+<div class="lane h"></div>
+
+<div class="direction n">NORTH</div>
+<div class="direction s">SOUTH</div>
+<div class="direction e">EAST</div>
+<div class="direction w">WEST</div>
+
+<div class="simSignal">
+${signalHTML()}
+</div>
+
+${cars}
+
+<div class="phase">
+
+<small>CURRENT PHASE</small>
+
+<b>${p.name}</b>
+
+<strong>
+${p.duration-phaseTime}s
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="card config">
+
+<h3>Traffic Configuration</h3>
+
+<div class="scenarios">
+
+${Object.keys(scenarios).map(k=>`
+
+<button
+class="${scenario===k?"active":""}"
+onclick="loadScenario('${k}')">
+${scenarios[k].name}
+</button>
+
+`).join("")}
+
+</div>
+
+
+${slider("north","North Traffic",config.north)}
+${slider("south","South Traffic",config.south)}
+${slider("east","East Traffic",config.east)}
+${slider("west","West Traffic",config.west)}
+
+<div class="metricRow">
+<span>Total Vehicles</span>
+<b>${m.total}</b>
+</div>
+
+<div class="metricRow">
+<span>Vehicles Served</span>
+<b>${m.served}</b>
+</div>
+
+<div class="metricRow">
+<span>Average Waiting</span>
+<b>${m.waiting}s</b>
+</div>
+
+<div class="metricRow">
+<span>Queue</span>
+<b>${m.queue}</b>
+</div>
+
+<div class="metricRow">
+<span>Congestion</span>
+<b>${m.congestion}%</b>
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+SLIDER
+============================== */
+
+function slider(key,label,value){
+
+return `
+
+<div class="slider">
+
+<div>
+<span>${label}</span>
+<b>${value}</b>
+</div>
+
+<input
+type="range"
+min="0"
+max="100"
+value="${value}"
+oninput="changeTraffic('${key}',this.value)"
+>
+
+</div>
+
+`;
+
+}
+
+
+function changeTraffic(key,value){
+
+config[key]=Number(value);
+
+render();
+
+}
+
+
+/* ==============================
+OPTIMIZATION
+============================== */
+
+function optimize(){
+
+const candidates=[
+[20,40],
+[25,35],
+[30,30],
+[35,25],
+[40,20]
+];
+
+let results=[];
+
+const nsTraffic=
+config.north+
+config.south;
+
+const ewTraffic=
+config.east+
+config.west;
+
+const total=
+nsTraffic+
+ewTraffic;
+
+
+candidates.forEach(([ns,ew])=>{
+
+const nsShare=ns/60;
+const ewShare=ew/60;
+
+const idealNS=nsTraffic/total;
+const idealEW=ewTraffic/total;
+
+const waiting=
+Math.abs(nsShare-idealNS)*100+
+Math.abs(ewShare-idealEW)*100;
+
+const queue=
+waiting*1.4;
+
+const congestion=
+waiting*1.1;
+
+const throughput=
+100-waiting;
+
+const performance=
+throughput-
+waiting-
+queue*.2-
+congestion*.2;
+
+results.push({
+ns,
+ew,
+waiting,
+queue,
+congestion,
+throughput,
+performance
+});
+
+});
+
+
+results.sort(
+(a,b)=>b.performance-a.performance
+);
+
+optimized=results[0];
+
+showToast(
+`AI selected NS ${optimized.ns}s / EW ${optimized.ew}s`
+);
+
+render();
+
+}
+
+
+function applyOptimization(){
+
+if(!optimized){
+
+optimize();
+
+return;
+
+}
+
+config.ns=optimized.ns;
+config.ew=optimized.ew;
+
+showToast(
+"AI recommendation applied"
+);
+
+render();
+
+}
+
+
+/* ==============================
+OPTIMIZATION PAGE
+============================== */
+
+function optimizationPage(){
+
+if(!optimized){
+
+optimize();
+
+}
+
+return `
+
+<div class="pageTitle">
+
+<div>
+<span class="label">
+AI OPTIMIZATION ENGINE
+</span>
+
+<h2>
+Signal Timing Optimization
+</h2>
+
+</div>
+
+<button
+class="primary"
+onclick="optimize()">
+✨ RUN AI OPTIMIZATION
+</button>
+
+</div>
+
+
+<div class="optimization">
+
+<div class="card">
+
+<span class="label">
+CURRENT TIMING
+</span>
+
+<div class="big">
+NS ${config.ns}s
+</div>
+
+<div class="big">
+EW ${config.ew}s
+</div>
+
+<p style="color:var(--muted)">
+Current congestion:
+${metrics().congestion}%
+</p>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+AI OPTIMIZED TIMING
+</span>
+
+<div class="big">
+NS ${optimized.ns}s
+</div>
+
+<div class="big">
+EW ${optimized.ew}s
+</div>
+
+<p style="color:var(--muted)">
+Performance Score:
+${optimized.performance.toFixed(2)}
+</p>
+
+<button
+class="primary"
+onclick="applyOptimization()">
+APPLY RECOMMENDATION
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:18px">
+
+<h3>
+Candidate Timing Strategies
+</h3>
+
+${candidateHTML()}
+
+</div>
+
+`;
+
+}
+
+
+function candidateHTML(){
+
+const candidates=[
+[20,40],
+[25,35],
+[30,30],
+[35,25],
+[40,20]
+];
+
+const nsTraffic=
+config.north+config.south;
+
+const ewTraffic=
+config.east+config.west;
+
+const total=
+nsTraffic+ewTraffic;
+
+return candidates.map(([ns,ew])=>{
+
+const ideal=nsTraffic/total;
+
+const error=
+Math.abs(ns/60-ideal);
+
+const performance=
+100-error*100;
+
+const best=
+optimized &&
+optimized.ns===ns &&
+optimized.ew===ew;
+
+return `
+
+<div class="candidate ${best?"best":""}">
+
+<span>
+NS ${ns}s / EW ${ew}s
+</span>
+
+<b>
+${performance.toFixed(1)}
+</b>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+/* ==============================
+RECOMMENDATION
+============================== */
+
+function recommendation(){
+
+const ns=
+config.north+
+config.south;
+
+const ew=
+config.east+
+config.west;
+
+if(ew>ns){
+
+return {
+
+title:"East/West traffic is higher",
+
+text:
+"Increase East/West green time to reduce simulated waiting and queue buildup."
+
+};
+
+}
+
+if(ns>ew){
+
+return {
+
+title:"North/South traffic is higher",
+
+text:
+"Increase North/South green time to better match the simulated traffic demand."
+
+};
+
+}
+
+return {
+
+title:"Traffic is balanced",
+
+text:
+"Current signal timing is reasonably balanced. Run optimization to test alternatives."
+
+};
+
+}
+
+
+/* ==============================
+ANALYTICS
+============================== */
+
+function analytics(){
+
+const data=
+history.slice(-60);
+
+return `
+
+<div class="pageTitle">
+
+<div>
+<span class="label">ANALYTICS</span>
+<h2>Simulation Analytics</h2>
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+Congestion Over Simulation Time
+</h3>
+
+<div class="chart">
+
+${data.map(x=>`
+
+<div
+class="bar"
+style="height:${Math.max(3,x.congestion)}%"
+title="${x.congestion.toFixed(1)}%">
+</div>
+
+`).join("")}
+
+</div>
+
+</div>
+
+
+${metricHTML()}
+
+<div class="grid2">
+
+<div class="card">
+
+<h3>
+Traffic Volume By Direction
+</h3>
+
+${volumeBar("North",config.north)}
+${volumeBar("South",config.south)}
+${volumeBar("East",config.east)}
+${volumeBar("West",config.west)}
+
+</div>
+
+
+<div class="card">
+
+<h3>
+Signal Timing Comparison
+</h3>
+
+<p style="margin:12px 0;color:var(--muted)">
+Current NS:
+<b>${config.ns}s</b>
+</p>
+
+<p style="margin:12px 0;color:var(--muted)">
+Current EW:
+<b>${config.ew}s</b>
+</p>
+
+${optimized?`
+
+<p style="margin:12px 0;color:var(--cyan)">
+Optimized NS:
+<b>${optimized.ns}s</b>
+</p>
+
+<p style="margin:12px 0;color:var(--cyan)">
+Optimized EW:
+<b>${optimized.ew}s</b>
+</p>
+
+`:''}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+function volumeBar(name,value){
+
+return `
+
+<div style="margin:15px 0">
+
+<div style="
+display:flex;
+justify-content:space-between;
+font-size:11px;
+color:#8ca4b3">
+
+<span>${name}</span>
+<b>${value}</b>
+
+</div>
+
+<div style="
+height:7px;
+background:#132b3b;
+border-radius:10px;
+margin-top:5px">
+
+<div style="
+width:${value}%;
+height:100%;
+background:linear-gradient(90deg,#148cc8,#20c9d0);
+border-radius:10px">
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+INTERSECTIONS
+============================== */
+
+function intersections(){
+
+const base=metrics().congestion;
+
+const junctions=[
+
+["Junction A",base],
+["Junction B",Math.min(100,base+15)],
+["Junction C",Math.max(0,base-20)],
+["Junction D",Math.min(100,base+8)]
+
+];
+
+const bottleneck=
+[...junctions].sort((a,b)=>b[1]-a[1])[0];
+
+return `
+
+<div class="pageTitle">
+
+<div>
+<span class="label">SMART CITY NETWORK</span>
+<h2>Intersection Network</h2>
+</div>
+
+</div>
+
+
+<div class="card" style="margin-bottom:18px">
+
+<b>
+CURRENT NETWORK BOTTLENECK
+</b>
+
+<span style="
+float:right;
+color:var(--yellow)">
+${bottleneck[0]}
+</span>
+
+</div>
+
+
+<div class="network">
+
+${junctions.map(j=>{
+
+const level=
+j[1]<35
+?"low"
+:j[1]<70
+?"medium"
+:"high";
+
+return `
+
+<div class="junction">
+
+<div class="dot ${level}"></div>
+
+<h3>${j[0]}</h3>
+
+<strong>
+${j[1].toFixed(1)}%
+</strong>
+
+<small style="color:var(--muted)">
+congestion
+</small>
+
+</div>
+
+`;
+
+}).join("")}
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+ASSISTANT
+============================== */
+
+function assistant(){
+
+return `
+
+<div class="chat">
+
+<div class="card">
+
+<div class="chatHeader">
+
+<div style="font-size:32px">
+🤖
+</div>
+
+<div>
+
+<h2>
+SmartFlow AI Assistant
+</h2>
+
+<small style="color:var(--muted)">
+Simulation-aware decision support
+</small>
+
+</div>
+
+</div>
+
+
+<div class="message" id="answer">
+
+Hello! I am SmartFlow AI Assistant.
+Ask me about the current simulation.
+
+</div>
+
+
+<div class="questions">
+
+${[
+"Why is traffic congested?",
+"Which road has the highest traffic?",
+"Explain the current signal timing",
+"What should I change?",
+"Compare current and optimized results",
+"What is the environmental impact?"
+].map(q=>`
+
+<button onclick="askAI('${q}')">
+${q}
+</button>
+
+`).join("")}
+
+</div>
+
+
+<div class="chatInput">
+
+<input
+id="question"
+placeholder="Ask SmartFlow AI..."
+onkeydown="if(event.key==='Enter')askAI()">
+
+<button
+class="primary"
+onclick="askAI()">
+ASK
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+function askAI(question){
+
+const input=
+document.getElementById("question");
+
+const q=
+(question||input?.value||"")
+.toLowerCase();
+
+const m=metrics();
+
+let answer="";
+
+
+if(q.includes("congest")){
+
+answer=
+`Current simulated congestion is ${m.congestion}%. The queue contains approximately ${m.queue} vehicles. Average waiting time is ${m.waiting} seconds.`;
+
+}
+
+else if(
+q.includes("highest")||
+q.includes("traffic")
+){
+
+const list=[
+["North",config.north],
+["South",config.south],
+["East",config.east],
+["West",config.west]
+];
+
+list.sort((a,b)=>b[1]-a[1]);
+
+answer=
+`${list[0][0]} currently has the highest simulated traffic volume at ${list[0][1]}.`;
+
+}
+
+else if(q.includes("signal")){
+
+answer=
+`Current phase: ${currentPhase().name}. Signal timing is NS ${config.ns}s and EW ${config.ew}s. Countdown is ${currentPhase().duration-phaseTime} seconds.`;
+
+}
+
+else if(
+q.includes("change")||
+q.includes("recommend")
+){
+
+answer=
+recommendation().text;
+
+}
+
+else if(q.includes("compare")){
+
+if(!optimized){
+
+optimize();
+
+}
+
+answer=
+`Current timing is NS ${config.ns}s / EW ${config.ew}s. The AI optimizer recommends NS ${optimized.ns}s / EW ${optimized.ew}s.`;
+
+}
+
+else if(
+q.includes("environment")
+){
+
+answer=
+`Simulation estimates: idle time ${m.idle.toFixed(2)}, fuel impact ${m.fuel.toFixed(2)}, and CO₂ impact ${m.co2.toFixed(2)}. These are simulated estimates, not real-world measurements.`;
+
+}
+
+else{
+
+answer=
+`Current simulation: ${m.total} vehicles generated, ${m.served} served, ${m.waiting}s average waiting time, ${m.queue} queue length, and ${m.congestion}% congestion.`;
+
+}
+
+
+const output=
+document.getElementById("answer");
+
+if(output){
+
+output.innerText=answer;
+
+}
+
+}
+
+
+/* ==============================
+PREDICTION
+============================== */
+
+function prediction(){
+
+const scenariosPrediction={
+
+NORMAL:1,
+
+"MORNING PEAK":1.3,
+
+AFTERNOON:1.15,
+
+"EVENING PEAK":1.4,
+
+"HEAVY TRAFFIC":1.7,
+
+"RAIN SCENARIO":1.5
+
+};
+
+return `
+
+<div class="pageTitle">
+
+<div>
+<span class="label">TRAFFIC PREDICTION</span>
+<h2>Future Congestion Prediction</h2>
+</div>
+
+</div>
+
+
+<div class="prediction">
+
+${Object.entries(
+scenariosPrediction
+).map(([name,mult])=>{
+
+const base=metrics();
+
+const congestion=
+Math.min(
+100,
+base.congestion*mult+
+config.north*.08
+);
+
+const q=
+Math.round(
+base.queue*mult+
+(config.north+
+config.south+
+config.east+
+config.west)*.1
+);
+
+const wait=
+(base.waiting*mult).toFixed(1);
+
+return `
+
+<div class="predCard">
+
+<span class="label">
+${name}
+</span>
+
+<strong>
+${congestion.toFixed(1)}%
+</strong>
+
+<p style="color:var(--muted)">
+Predicted congestion
+</p>
+
+<p style="margin-top:15px;color:#9bb1bf">
+Queue: ${q}
+</p>
+
+<p style="color:#9bb1bf">
+Waiting: ${wait}s
+</p>
+
+</div>
+
+`;
+
+}).join("")}
+
+</div>
+
+<div class="card" style="margin-top:18px">
+
+<h3>AI Prediction Recommendation</h3>
+
+<p style="
+color:var(--muted);
+line-height:1.7;
+margin-top:10px">
+
+Based on the current simulated traffic distribution,
+prepare additional green time for the direction
+with the highest predicted demand.
+
+<br><br>
+
+<strong style="color:var(--yellow)">
+⚠ Prediction data is simulation-based and should not
+be treated as real-world traffic forecasting.
+</strong>
+
+</p>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+EMERGENCY
+============================== */
+
+function emergencyPage(){
+
+return `
+
+<div class="pageTitle">
+
+<div>
+
+<span class="label">
+SIMULATION ONLY
+</span>
+
+<h2>
+Emergency Vehicle Optimization
+</h2>
+
+</div>
+
+<button
+class="primary"
+onclick="toggleEmergency()">
+
+🚑 ${emergency?"DISABLE":"ENABLE"} EMERGENCY MODE
+
+</button>
+
+</div>
+
+
+<div class="card">
+
+${emergency?`
+
+<h2 style="color:var(--red)">
+🚑 AMBULANCE ACTIVE
+</h2>
+
+<p style="
+color:var(--muted);
+line-height:1.7;
+margin-top:15px">
+
+Origin:
+<b>North</b>
+
+<br>
+
+Destination:
+<b>East</b>
+
+<br><br>
+
+Simulated route:
+
+<br>
+
+North → Intersection → East
+
+<br><br>
+
+Recommended signal priority:
+
+<b style="color:var(--cyan)">
+East/West Green
+</b>
+
+</p>
+
+<div style="
+font-size:55px;
+margin-top:25px">
+🚑
+</div>
+
+`:`
+
+<h3>
+Emergency Vehicle Mode
+</h3>
+
+<p style="
+color:var(--muted);
+line-height:1.7;
+margin-top:10px">
+
+Enable emergency mode to simulate an ambulance
+travelling through the intersection and identify
+signals that could receive simulated priority.
+
+</p>
+
+`}
+
+</div>
+
+
+<div class="card" style="margin-top:18px">
+
+<strong style="color:var(--yellow)">
+IMPORTANT
+</strong>
+
+<p style="
+color:var(--muted);
+margin-top:8px">
+
+This feature is a simulation and decision-support
+demonstration only. It does not connect to or control
+actual traffic signals.
+
+</p>
+
+</div>
+
+`;
+
+}
+
+
+function toggleEmergency(){
+
+emergency=!emergency;
+
+render();
+
+}
+
+
+/* ==============================
+REPORT
+============================== */
+
+function reports(){
+
+const m=metrics();
+
+const improvement=
+optimized
+?
+Math.max(
+0,
+((m.waiting-
+Math.max(0,m.waiting*.8))
+/Math.max(1,m.waiting))*100
+).toFixed(1)
+:"0";
+
+return `
+
+<div class="pageTitle">
+
+<div>
+
+<span class="label">REPORT CENTER</span>
+
+<h2>
+Traffic Optimization Report
+</h2>
+
+</div>
+
+<button
+class="primary"
+onclick="downloadReport()">
+
+📄 GENERATE REPORT
+
+</button>
+
+</div>
+
+
+<div class="card report">
+
+<h1>
+SMARTFLOW AI
+</h1>
+
+<h2>
+Traffic Signal Optimization Report
+</h2>
+
+<hr style="
+border-color:#244557;
+margin:20px 0">
+
+<p>
+Scenario:
+${scenarios[scenario].name}
+</p>
+
+<p>
+Traffic Volume:
+N ${config.north} |
+S ${config.south} |
+E ${config.east} |
+W ${config.west}
+</p>
+
+<p>
+Current Signal Timing:
+NS ${config.ns}s /
+EW ${config.ew}s
+</p>
+
+<p>
+Optimized Timing:
+${optimized
+?`NS ${optimized.ns}s / EW ${optimized.ew}s`
+:"Run AI Optimization first"}
+</p>
+
+<p>
+Average Waiting Time:
+${m.waiting}s
+</p>
+
+<p>
+Queue Length:
+${m.queue}
+</p>
+
+<p>
+Congestion:
+${m.congestion}%
+</p>
+
+<p>
+Vehicles Served:
+${m.served}
+</p>
+
+<p>
+Throughput:
+${m.throughput}
+</p>
+
+<p>
+Estimated Fuel Impact:
+${m.fuel}
+</p>
+
+<p>
+Estimated CO₂ Impact:
+${m.co2}
+</p>
+
+<p>
+AI Recommendation:
+${recommendation().text}
+</p>
+
+<p>
+Improvement:
+${improvement}%
+</p>
+
+<br>
+
+<strong style="color:var(--yellow)">
+All environmental values are simulation estimates.
+SmartFlow AI does not control real-world traffic signals.
+</strong>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+DOWNLOAD REPORT
+============================== */
+
+function downloadReport(){
+
+const m=metrics();
+
+const text=`
+
+SMARTFLOW AI
+TRAFFIC SIGNAL OPTIMIZATION REPORT
+====================================
+
+Scenario:
+${scenarios[scenario].name}
+
+Traffic Volume
+North: ${config.north}
+South: ${config.south}
+East: ${config.east}
+West: ${config.west}
+
+CURRENT SIGNAL TIMING
+North/South: ${config.ns}s
+East/West: ${config.ew}s
+
+AI OPTIMIZED TIMING
+${
+optimized
+?`North/South: ${optimized.ns}s
+East/West: ${optimized.ew}s`
+:"Optimization not run"
+}
+
+METRICS
+-------
+
+Total Vehicles:
+${m.total}
+
+Vehicles Served:
+${m.served}
+
+Average Waiting Time:
+${m.waiting}s
+
+Maximum Waiting Time:
+${m.maxWaiting}s
+
+Queue Length:
+${m.queue}
+
+Average Queue:
+${m.avgQueue}
+
+Congestion:
+${m.congestion}%
+
+Throughput:
+${m.throughput}
+
+Estimated Idle Time:
+${m.idle}
+
+Estimated Fuel Impact:
+${m.fuel}
+
+Estimated CO2 Impact:
+${m.co2}
+
+AI RECOMMENDATION
+-----------------
+
+${recommendation().text}
+
+FINAL NOTE
+----------
+
+This application is a simulation and
+decision-support platform.
+
+Environmental numbers are simulation estimates.
+
+SmartFlow AI does not directly control
+real-world traffic signals.
+
+Generated:
+${new Date().toLocaleString()}
+
+`;
+
+
+const blob=
+new Blob(
+[text],
+{type:"text/plain"}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+"SmartFlow-AI-Traffic-Report.txt";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+showToast(
+"Report generated successfully"
+);
+
+}
+
+
+/* ==============================
+PRESENTATION MODE
+============================== */
+
+function presentationMode(){
+
+presentation=true;
+
+presentationStep=0;
+
+render();
+
+}
+
+function nextPresentation(){
+
+presentationStep++;
+
+if(presentationStep>6){
+
+presentationStep=0;
+
+}
+
+render();
+
+}
+
+
+function presentationHTML(){
+
+const steps=[
+
+[
+"🚦 TRAFFIC PROBLEM",
+"Traffic demand creates queues, delays and congestion."
+],
+
+[
+"📊 CURRENT CONGESTION",
+`Current simulated congestion is ${metrics().congestion}%.`
+],
+
+[
+"🤖 AI ANALYSIS",
+recommendation().text
+],
+
+[
+"⚙ OPTIMIZATION PROCESS",
+"AI tests multiple signal timing strategies."
+],
+
+[
+"✨ OPTIMIZED SIGNAL",
+optimized
+?`NS ${optimized.ns}s / EW ${optimized.ew}s`
+:"Run optimization."
+],
+
+[
+"📈 BEFORE / AFTER",
+"Compare simulated waiting time, queue and congestion."
+],
+
+[
+"🌱 SUSTAINABILITY",
+`Estimated CO₂ impact: ${metrics().co2}.`
+]
+
+];
+
+const s=steps[presentationStep];
+
+return `
+
+<div class="presentation">
+
+<span class="label">
+HACKATHON PRESENTATION MODE
+</span>
+
+<h1>
+SMARTFLOW AI
+</h1>
+
+<div class="step">
+${s[0]}
+</div>
+
+<p style="
+max-width:700px;
+margin:auto;
+color:var(--muted);
+line-height:1.7">
+
+${s[1]}
+
+</p>
+
+<div class="progress">
+
+<div style="
+width:${((presentationStep+1)/steps.length)*100}%">
+</div>
+
+</div>
+
+<button
+class="primary"
+onclick="nextPresentation()">
+
+NEXT STEP →
+
+</button>
+
+<br><br>
+
+<button
+class="secondary"
+onclick="presentation=false;render()">
+
+EXIT PRESENTATION
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+/* ==============================
+TOAST
+============================== */
+
+function showToast(text){
+
+const t=
+document.getElementById("toast");
+
+t.innerText=text;
+
+t.classList.add("show");
+
+setTimeout(
+()=>t.classList.remove("show"),
+2000
+);
+
+}
+
+
+/* ==============================
+RENDER
+============================== */
+
+function render(){
+
+document.getElementById("pageTitle")
+.innerText=
+currentPage==="dashboard"
+?"Dashboard"
+:currentPage.charAt(0).toUpperCase()+
+currentPage.slice(1);
+
+document.getElementById("runStatus")
+.innerText=
+running
+?"🟢 SIMULATION RUNNING"
+:"⚪ SIMULATION PAUSED";
+
+
+if(presentation){
+
+document.getElementById("content")
+.innerHTML=
+presentationHTML();
+
+return;
+
+}
+
+
+const pages={
+
+dashboard,
+
+simulation:simulationPage,
+
+optimization:optimizationPage,
+
+analytics,
+
+intersections,
+
+assistant,
+
+prediction,
+
+emergency:emergencyPage,
+
+reports
+
+};
+
+
+document.getElementById("content")
+.innerHTML=
+pages[currentPage]();
+
+}
+
+
+/* ==============================
+KEYBOARD SHORTCUTS
+============================== */
+
+document.addEventListener(
+"keydown",
+e=>{
+
+if(e.key===" "){
+
+e.preventDefault();
+
+running
+?pause()
+:start();
+
+}
+
+if(e.key==="r"){
+
+reset();
+
+}
+
+});
+
+
+
+/* ==============================
+INITIALIZE
+============================== */
+
+render();
+
+</script>
+
+</body>
+</html>
